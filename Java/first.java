@@ -7,6 +7,7 @@ public class first {
 
         String name = "Aryan";
         // String name2 = new String("Aryan");
+        String name2= "Abhishek";
 
         System.out.println(name.toUpperCase());
         System.out.println(name.toLowerCase());
@@ -14,6 +15,7 @@ public class first {
         System.out.println(name.charAt(0));
         System.out.println(name.substring(0, 3));
         // System.out.println(name.equals(name2));
+        System.out.println(name.equals(name2));
 
         System.out.println("Sum: " + (a + b));
         System.out.println("Difference: " + (a - b));
