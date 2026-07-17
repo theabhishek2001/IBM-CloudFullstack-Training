@@ -118,11 +118,86 @@ public class second {
 
         // Predict the output of each program without running it. Show your working
 
-        int x=5;
-        System.out.println(x++  + " " + ++x);
+        // int x=5;
+        // System.out.println(x++  + " " + ++x);
 
-        for(int i=10;i>0;i-=3){
-            System.out.print(i + "\n");
+        // for(int i=10;i>0;i-=3){
+        //     System.out.print(i + "\n");
+        // }
+
+
+        //************************Anagram     ************************* ///// 
+        //cat - act
+
+        // String s1=sc.nextLine();
+        // String s2=sc.nextLine();
+
+        
+
+        // if(Anagram(s1,s2)){
+        //     System.out.println("This is Anagram");
+        // }
+        // else{
+        //     System.out.println("This is not Anagram");
+        // }
+
+
+
+        // //****************Array Question******************************************** */
+        
+
+        int k=2;
+
+
+        int[] arr={0,1,3,7,5};
+        int[] narr=new int[5];
+
+        int n=arr.length;
+        for(int i=0;i<arr.length;i++){
+            if(k<n){
+                narr[i]=arr[k];
+                
+            }
+            else{
+                k=0;
+                narr[i]=arr[k];
+            }
+            k++;
         }
+        for(int i=0;i<n;i++){
+        System.out.print(narr[i]);
+        }
+
+
+
+
+        //********************Home Work ***********************************/
+        // Numberer          Posibilities                          N(P)
+
+        // 1                 1                                     1
+        // 2                 1+1 , 2                               2
+        // 3                 1+1+1, 2+1, 3                         3
+        // 4                 1+1+1=1, 4 , 2+2, 2+1+1, 3+1          5
+
+        //PRINT PARTITIONS AND COUNT ALSO
+
+
     }
+
+    // static boolean Anagram(String s1,String s2){
+
+    //     char[] arr=new char[26];
+
+    //      for (int i = 0; i < s1.length(); i++) {
+    //         arr[s1.charAt(i) - 'a']++;
+    //         arr[s2.charAt(i) - 'a']--;
+    //     }
+
+    //     for (int i = 0; i < 26; i++) {
+    //         if (arr[i] != 0)
+    //             return false;
+    //     }
+
+    //     return true;
+    // } 
 }
