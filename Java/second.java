@@ -1,5 +1,25 @@
+
 import java.util.Scanner; // Step 1: Import Scanner
+
+
 public class second {
+
+        // static boolean Anagram(String s1,String s2){
+
+    //     char[] arr=new char[26];
+
+    //      for (int i = 0; i < s1.length(); i++) {
+    //         arr[s1.charAt(i) - 'a']++;
+    //         arr[s2.charAt(i) - 'a']--;
+    //     }
+
+    //     for (int i = 0; i < 26; i++) {
+    //         if (arr[i] != 0)
+    //             return false;
+    //     }
+
+    //     return true;
+    // }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in); // Step 2: Create Scanner
         // System.out.print("Enter your name: ");
@@ -41,7 +61,13 @@ public class second {
         // System.out.print("Temperature is "+ feh);
 
         // ⭐⭐
-//  Challenge 2
+
+
+
+
+//  **************************************  Challenge 2  ***************************************///
+
+
 // Write a program that takes 5 numbers as 
 // input into an array, then prints the 
 // maximum, minimum, sum, and average.
@@ -73,7 +99,11 @@ public class second {
         // System.out.println("Sum: " + sum);
         // System.out.println("Average: " + avg);
 
-//         Challenge 1
+
+
+
+//  ********************       Challenge 1   *********************************************////////
+
 // Print a right-angle star triangle pattern
 
         // int n= sc.nextInt();
@@ -90,7 +120,8 @@ public class second {
 
 
        
-//  Challenge 3
+// ////********************* */ Challenge 3  ***********************************////
+
 // Print all prime numbers between 1 and 50. 
 // Count how many there are and display the 
 // count at the end.
@@ -126,7 +157,7 @@ public class second {
         // }
 
 
-        //************************Anagram     ************************* ///// 
+  //    //**/**********************      Anagram     ************************* ///// 
         //cat - act
 
         // String s1=sc.nextLine();
@@ -146,30 +177,30 @@ public class second {
         // //****************Array Question******************************************** */
         
 
-        int k=2;
+        // int k=2;
 
+        // // 3 7 0 1 5
+        // int[] arr={0,1,3,7,5};
+        // int[] narr=new int[5];
 
-        int[] arr={0,1,3,7,5};
-        int[] narr=new int[5];
-
-        int n=arr.length;
-        for(int i=0;i<arr.length;i++){
-            if(k<n){
-                narr[i]=arr[k];
+        // int n=arr.length;
+        // for(int i=0;i<arr.length;i++){
+        //     if(k<n){
+        //         narr[i]=arr[k];
                 
-            }
-            else{
-                k=0;
-                narr[i]=arr[k];
-            }
-            k++;
-        }
-        for(int i=0;i<n;i++){
-        System.out.print(narr[i]);
-        }
+        //     }
+        //     else{
+        //         k=0;
+        //         narr[i]=arr[k];
+        //     }
+        //     k++;
+        // }
+        // for(int i=0;i<n;i++){
+        // System.out.print(narr[i]);
+        // }
 
 
-
+        // 
 
         //********************Home Work ***********************************/
         // Numberer          Posibilities                          N(P)
@@ -180,24 +211,16 @@ public class second {
         // 4                 1+1+1=1, 4 , 2+2, 2+1+1, 3+1          5
 
         //PRINT PARTITIONS AND COUNT ALSO
+ 
+        int n = sc.nextInt();
+
+        for(int i=0;i<n;i++){
+
+        }
+
 
 
     }
 
-    // static boolean Anagram(String s1,String s2){
-
-    //     char[] arr=new char[26];
-
-    //      for (int i = 0; i < s1.length(); i++) {
-    //         arr[s1.charAt(i) - 'a']++;
-    //         arr[s2.charAt(i) - 'a']--;
-    //     }
-
-    //     for (int i = 0; i < 26; i++) {
-    //         if (arr[i] != 0)
-    //             return false;
-    //     }
-
-    //     return true;
-    // } 
+ 
 }
