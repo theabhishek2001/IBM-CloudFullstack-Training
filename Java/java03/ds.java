@@ -1,5 +1,7 @@
 package java03;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.Stack;
 
 class Stackx{
@@ -19,10 +21,27 @@ class Stackx{
     }
 }
 
+class Que{
+    Que(){
+        Queue<Integer> q =new ArrayDeque();
+
+        q.offer(5);
+        q.offer(69);
+        q.offer(96);
+
+        q.poll();
+
+        System.out.println(q.size());
+        System.out.println(q.peek());
+        System.out.println(q.contains(34));
+    }
+}
+
 public class ds {
     public static void main(String[] args) {
-        Stackx s= new Stackx();
+        // Stackx s= new Stackx();
+        Que q= new Que();
 
-        
+
     }
 }
