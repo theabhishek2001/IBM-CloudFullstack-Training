@@ -50,4 +50,4 @@ function getData(){
     })
 }
 
-getData().
+getData()
