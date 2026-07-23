@@ -58,35 +58,6 @@ This repository contains learning materials, practice projects, assignments, and
 - Deployment pipelines
 - DevOps practices
 
-## Repository Structure
-
-```
-
-IBM-CloudFullstack-Training
-│
-├── Java
-│   └── Java practice programs
-│
-├── JavaScript
-│   └── JS examples and projects
-│
-├── HTML-CSS
-│   └── Frontend practice files
-│
-├── SpringBoot
-│   └── Backend applications
-│
-├── Docker
-│   └── Docker examples and configurations
-│
-├── Kubernetes
-│   └── Kubernetes manifests and examples
-│
-└── CI-CD
-└── Pipeline configurations and deployment examples
-
-```
-
 ## Purpose
 
 The purpose of this repository is to:
