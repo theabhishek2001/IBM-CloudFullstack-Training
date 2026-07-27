@@ -21,7 +21,7 @@ public class e {
                 
                 break;
             
-                case Wednesday:
+            case Wednesday:
                 System.out.println("Öption 3");
                 
                 break;

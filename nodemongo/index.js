@@ -35,6 +35,7 @@ app.post('/createQuiz', async (req, res) => {
         res.status(500).json({ error: 'Failed to create quiz' });
     });
 });
+
 app.put('/updateQuiz', async (req, res) => {
     const { id, title, description } = req.body;
     Quiz.findByIdAndUpdate(id, { title, description }, { new: true }).then(updatedQuiz => {
@@ -43,6 +44,8 @@ app.put('/updateQuiz', async (req, res) => {
         res.status(500).json({ error: 'Failed to update quiz' });
     });
 });
+
+
 app.delete('/deleteQuiz', async (req, res) => {
     const { id } = req.body;
     Quiz.findByIdAndDelete(id).then(() => {
