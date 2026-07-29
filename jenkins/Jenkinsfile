@@ -1,0 +1,162 @@
+pipeline {
+    /* 
+       'agent any' defines that this pipeline can run on any available Jenkins executor.
+       In our local classroom setup, it runs on the Jenkins Controller's built-in executor.
+    */
+    agent any
+
+    /*
+       'environment' defines variables available to all stages in this pipeline.
+       Using variables prevents hardcoding values throughout the script.
+    */
+    environment {
+        APP_IMAGE_NAME = 'jenkins-demo-app'
+        CONTAINER_NAME = 'jenkins-demo-running'
+        HOST_PORT      = '8081'
+        CONTAINER_PORT = '3000'
+    }
+
+    stages {
+        /*
+           Stage 1: Checkout
+           Pulls the latest source code from the configured Git repository.
+           'checkout scm' automatically uses the credentials and repository configured in the Jenkins Job UI.
+        */
+        stage('Checkout') {
+            steps {
+                echo '=== STAGE 1: CHECKOUT ==='
+                script {
+                    try {
+                        checkout scm
+                    } catch (err) {
+                        echo "No SCM configured. Using files already present in the workspace."
+                    }
+                }
+            }
+        }
+
+        /*
+           Stage 2: Install Dependencies
+           Runs local package installation. Jenkins runs this in the workspace context.
+        */
+        stage('Install Dependencies') {
+            steps {
+                echo '=== STAGE 2: INSTALL DEPENDENCIES ==='
+                sh 'npm install'
+            }
+        }
+
+        /*
+           Stage 3: Run Unit Tests
+           Executes Jest unit tests. If any test fails, the command exits with code 1.
+           Jenkins captures the non-zero exit status, fails this stage, and aborts the remaining stages.
+        */
+        stage('Run Unit Tests') {
+            steps {
+                echo '=== STAGE 3: RUN UNIT TESTS ==='
+                sh 'npm test'
+            }
+        }
+
+        /*
+           Stage 4: Build Docker Image
+           Builds the application's container image using the project's Dockerfile.
+           Tags the image with the unique build number (${BUILD_NUMBER}) and 'latest'.
+        */
+        stage('Build Docker Image') {
+            steps {
+                echo '=== STAGE 4: BUILD DOCKER IMAGE ==='
+                sh "docker build -t ${APP_IMAGE_NAME}:${BUILD_NUMBER} ."
+                sh "docker tag ${APP_IMAGE_NAME}:${BUILD_NUMBER} ${APP_IMAGE_NAME}:latest"
+            }
+        }
+
+        /*
+           Stage 5: Deploy & Smoke Test
+           Deploys the built image as a running container on the host machine.
+           1. Safely tears down any previous builds' containers to prevent port conflicts.
+           2. Launches the container in detached mode (-d).
+           3. Polls the container's health check API up to 5 times.
+           4. Cleans up and fails the stage if the health check fails.
+        */
+        stage('Deploy & Smoke Test') {
+            steps {
+                echo '=== STAGE 5: DEPLOY & SMOKE TEST ==='
+                
+                // Tear down previous deployment container if running
+                sh """
+                    if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}\$"; then
+                        echo "Found existing running container: ${CONTAINER_NAME}. Stopping and removing..."
+                        docker stop ${CONTAINER_NAME} || true
+                        docker rm -f ${CONTAINER_NAME} || true
+                    fi
+                """
+                
+                // Dynamically fetch the network name of the Jenkins container
+                script {
+                    env.NETWORK_NAME = sh(
+                        script: "docker inspect jenkins-control-plane -f '{{range \$k,\$v := .NetworkSettings.Networks}}{{\$k}}{{end}}'",
+                        returnStdout: true
+                    ).trim()
+                }
+                
+                // Run the newly built container on the same network, exposing port 8081 on the host
+                sh "docker run -d --name ${CONTAINER_NAME} --network ${env.NETWORK_NAME} -p ${HOST_PORT}:${CONTAINER_PORT} ${APP_IMAGE_NAME}:${BUILD_NUMBER}"
+                
+                // Poll the health check endpoint using the container's name and internal port
+                sh """
+                    echo "Waiting for application to bootstrap..."
+                    sleep 3
+                    
+                    SUCCESS=false
+                    for i in 1 2 3 4 5; do
+                        echo "Polling health check endpoint: http://${CONTAINER_NAME}:${CONTAINER_PORT}/health (Attempt \$i/5)..."
+                        RESPONSE=\$(curl -s http://${CONTAINER_NAME}:${CONTAINER_PORT}/health || true)
+                        echo "Response: \$RESPONSE"
+                        
+                        if echo "\$RESPONSE" | grep -q '"status":"UP"'; then
+                            echo "Smoke test passed successfully!"
+                            SUCCESS=true
+                            break
+                        fi
+                        
+                        echo "App not ready. Retrying in 2 seconds..."
+                        sleep 2
+                    done
+                    
+                    if [ "\$SUCCESS" = false ]; then
+                        echo "Smoke test failed! Stopping and removing container..."
+                        docker stop ${CONTAINER_NAME} || true
+                        docker rm -f ${CONTAINER_NAME} || true
+                        exit 1
+                    fi
+                """
+            }
+        }
+    }
+
+    /*
+       'post' execution blocks execute code at the end of the pipeline run.
+       - always: Runs regardless of status (useful for notifications, global cleanups).
+       - success: Runs only if all stages passed (ideal for publishing reports or notification logs).
+       - failure: Runs if any stage failed (ideal for alerts and logs).
+    */
+    post {
+        always {
+            echo '=== PIPELINE COMPLETE ==='
+            echo "Completed build #${BUILD_NUMBER} for pipeline job: ${JOB_NAME}"
+        }
+        success {
+            echo '=================================================='
+            echo "🎉 PIPELINE SUCCESSFUL 🎉"
+            echo "Application is live at: http://localhost:${HOST_PORT}"
+            echo '=================================================='
+        }
+        failure {
+            echo '=================================================='
+            echo "❌ PIPELINE FAILED ❌"
+            echo "Check the console output above to debug the failure."
+            echo '=================================================='
+        }
+    }
+}

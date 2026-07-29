@@ -1,0 +1,22 @@
+FROM jenkins/jenkins:lts
+
+# Switch to root to install system-level packages
+USER root
+
+# Install dependencies, Docker GPG key, repository, Docker CLI, and Node.js
+RUN apt-get update && apt-get install -y \
+    lsb-release \
+    curl \
+    gnupg \
+    && curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null \
+    && apt-get update && apt-get install -y docker-ce-cli \
+    # Install Node.js 20 LTS from NodeSource
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Switch back to the default jenkins user
+USER jenkins

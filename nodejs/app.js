@@ -19,17 +19,17 @@ const bodyParser = require('body-parser');
     }
 }
 
-// const myServer = http.createServer(async (req, res) => {
-//     if (req.url === '/start') {
-//         res.writeHead(200, { 'Content-Type': 'text/html' });
-//         res.end(await getHTMLFileSync('login.html'));
-//     } else {
-//         res.writeHead(404);
-//         res.end("Page Not Found");
-//     }
-// });
+const myServer = http.createServer(async (req, res) => {
+    if (req.url === '/start') {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(await getHTMLFileSync('login.html'));
+    } else {
+        res.writeHead(404);
+        res.end("Page Not Found");
+    }
+});
 
-// myServer.listen(8000, () => console.log("Started Server"));
+myServer.listen(8000, () => console.log("Started Server"));
 
 
 const app = express();

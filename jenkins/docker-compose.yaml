@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    container_name: jenkins-control-plane
+    restart: unless-stopped
+    ports:
+      - "8080:8080"   # Jenkins Web UI
+      - "50000:50000" # Agent communication port (optional but standard)
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      # Mount host's Docker socket to allow Jenkins to control the host's Docker engine
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Mount local project files to the Jenkins workspace for zero-setup builds
+      - .:/var/jenkins_home/workspace/jenkins-101-demo
+    # Running as root ensures the jenkins container has sufficient permissions to access /var/run/docker.sock
+    # Note: In a production setting, you would create a dedicated docker group and match group IDs, but
+    # root is recommended for local classroom demonstrations to ensure zero permission errors on student laptops.
+    user: root
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=true
+
+volumes:
+  jenkins_home:
+    driver: local

@@ -1,0 +1,17 @@
+{
+  "name": "jenkins-demo-app",
+  "version": "1.0.0",
+  "description": "Minimal Node.js Express REST API for Jenkins 101 classroom demo",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "jest --detectOpenHandles --forceExit"
+  },
+  "dependencies": {
+    "express": "^4.22.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
