@@ -1,0 +1,19 @@
+// function add(a,b){
+//     return a+b;
+// }
+
+// module.exports = {add};
+
+// Load the filesystem module
+const fs = require('fs');
+
+// Read file asynchronously
+fs.readFile('names.txt', 'utf8', (err,data) => {
+  if (err) {
+    console.error('Error reading file: ' + err);
+    return;
+  }
+  console.log('File content: ' + data);
+});
+
+console.log('Reading file... (this runs first!)');
