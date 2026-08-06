@@ -20,7 +20,7 @@ app.use(express.json());
 app.use("/api/products", productRouter);
 
 connectDB(
-  "mongodb+srv://admin:admin@expresscluster.bfaaxje.mongodb.net/productsdb"
+  "mongodb+srv://abhishek26kashyap_db_user:Xc53Y6Silqrbo3tv@expresscluster.bfaaxje.mongodb.net/productsdb"
 )
   .then(() => {
     console.log("Connected to the DB");
